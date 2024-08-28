@@ -8,6 +8,4 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="key_pressed_color">#FFEEEEEE</color> <!-- Light gray for pressed -->
-    <color name="key_default_color">#303F9F</color> <!-- Default gray -->
 </resources>

@@ -7,6 +7,14 @@ import android.graphics.Paint;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.HashMap;
@@ -15,9 +23,11 @@ import java.util.Map;
 
 public class CustomKeyboardView extends KeyboardView {
 
+    private PopupWindow previewPopup;
+    private TextView previewTextView;
+
     private Paint paint;
     private Map<String, String> keyMappings;
-    private int pressedKeyIndex = -1;
     private boolean isLongPressHandled = false;
 
     public CustomKeyboardView(Context context, AttributeSet attrs) {
@@ -30,7 +40,6 @@ public class CustomKeyboardView extends KeyboardView {
         init();
     }
 
-    // Initialize the paint object and key mappings
     private void init() {
         paint = new Paint();
         paint.setTextAlign(Paint.Align.RIGHT);
@@ -40,11 +49,41 @@ public class CustomKeyboardView extends KeyboardView {
 
         // Define mappings for keys to custom text
         keyMappings = new HashMap<>();
-        keyMappings.put("q", "1");
-        keyMappings.put("w", "2");
-        keyMappings.put("e", "3");
-        keyMappings.put("r", "4");
-        keyMappings.put("t", "5");
+
+        keyMappings.put("q", "%");
+        keyMappings.put("w", "\\"); // Note: use "\\" for backslash
+        keyMappings.put("e", "k");
+        keyMappings.put("r", "=");
+        keyMappings.put("t", "[");
+        keyMappings.put("y", "]");
+        keyMappings.put("u", "<");
+        keyMappings.put("i", ">");
+        keyMappings.put("o", "{");
+        keyMappings.put("p", "}");
+
+        keyMappings.put("a", "@");
+        keyMappings.put("s", "#");
+        keyMappings.put("d", "%");
+        keyMappings.put("f", "_");
+        keyMappings.put("g", "j");
+        keyMappings.put("h", "-");
+        keyMappings.put("j", "+");
+        keyMappings.put("k", "(");
+        keyMappings.put("l", ")");
+
+        keyMappings.put("z", "*");
+        keyMappings.put("x", "\"");
+        keyMappings.put("c", "'");
+        keyMappings.put("v", ":");
+        keyMappings.put("b", ";");
+        keyMappings.put("n", "!");
+        keyMappings.put("m", "?");
+
+        keyMappings.put(",", ",");
+        keyMappings.put("SPACE", " "); // Handle space bar separately
+        keyMappings.put(".", ".");
+        keyMappings.put("DONE", "DONE"); // Special key background
+
         // Add more mappings as needed...
     }
 
@@ -58,7 +97,7 @@ public class CustomKeyboardView extends KeyboardView {
                 String keyLabel = key.label.toString().toLowerCase();
                 if (keyMappings.containsKey(keyLabel)) {
                     // Calculate position for top-right corner
-                    float xPos = key.x + key.width - 15; // 25 pixels from the right edge
+                    float xPos = key.x + key.width - 15; // 15 pixels from the right edge
                     float yPos = key.y + paint.getTextSize() + 10; // Adjust as needed to position vertically
 
                     // Draw custom text on the key
@@ -73,11 +112,12 @@ public class CustomKeyboardView extends KeyboardView {
         }
     }
 
-
     @Override
     public boolean onLongPress(Keyboard.Key key) {
-        Toast.makeText(getContext(), "Long press detected", Toast.LENGTH_LONG).show();
+       //Toast.makeText(getContext(), "Long press detected", Toast.LENGTH_SHORT).show();
         if (key.popupCharacters != null && key.popupCharacters.length() > 0) {
+            showPreview(key);
+
             char alternateCode = key.popupCharacters.charAt(0);
             getOnKeyboardActionListener().onKey(alternateCode, null);
             isLongPressHandled = true;
@@ -89,10 +129,59 @@ public class CustomKeyboardView extends KeyboardView {
 
     @Override
     public boolean performLongClick() {
-        if (pressedKeyIndex >= 0) {
-            Keyboard.Key key = getKeyboard().getKeys().get(pressedKeyIndex);
-            return onLongPress(key);
+        if (isLongPressHandled) {
+            isLongPressHandled = false; // Reset the flag
+            return true; // Indicate that the long click was handled
         }
         return super.performLongClick();
+    }
+
+    private void showPreview(Keyboard.Key key) {
+        if (previewPopup == null) {
+            // Inflate the key preview layout
+            View previewView = LayoutInflater.from(getContext()).inflate(R.layout.key_preview2, null);
+
+            // Access the TextView by its ID
+            previewTextView = previewView.findViewById(R.id.key_preview_text);
+
+            // Create the PopupWindow with the inflated layout
+            previewPopup = new PopupWindow(previewView, WindowManager.LayoutParams.WRAP_CONTENT,
+                    WindowManager.LayoutParams.WRAP_CONTENT, true);
+            previewPopup.setFocusable(false); // Prevent focus issues
+            previewPopup.setTouchable(true);  // Allow touch events
+        }
+
+        // Set the text to display the first character of popupCharacters
+        previewTextView.setText(String.valueOf(key.popupCharacters.charAt(0)));
+
+        // Measure the preview TextView to get its dimensions
+        previewTextView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        int previewWidth = previewTextView.getMeasuredWidth();
+        int previewHeight = previewTextView.getMeasuredHeight();
+
+        // Get the location of the key on the screen
+        int[] keyLocation = new int[2];
+        getLocationOnScreen(keyLocation);
+
+
+        // Calculate position for the preview
+        int x = keyLocation[0] + key.x + key.width / 2; // Center horizontally
+        int y =  key.y - key.height; // Display above the original key
+
+        // Show the PopupWindow
+        previewPopup.showAtLocation(this, Gravity.NO_GRAVITY, x, y);
+    }
+
+
+
+
+    @Override
+    public boolean onTouchEvent(MotionEvent me) {
+        if (me.getAction() == MotionEvent.ACTION_UP || me.getAction() == MotionEvent.ACTION_CANCEL) {
+            if (previewPopup != null && previewPopup.isShowing()) {
+                previewPopup.dismiss();
+            }
+        }
+        return super.onTouchEvent(me);
     }
 }

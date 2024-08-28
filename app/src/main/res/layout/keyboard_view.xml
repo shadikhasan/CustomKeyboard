@@ -5,7 +5,6 @@
     android:layout_height="wrap_content"
     android:background="#ff33b5e5"
     android:keyBackground="@drawable/key_background"
-    android:keyPreviewLayout="@layout/key_preview"
     android:keyTextSize="22sp"
     android:labelTextSize="22sp"
     android:paddingLeft="0dp"
