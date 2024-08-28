@@ -1,0 +1,8 @@
+<!-- res/values/styles.xml -->
+<resources>
+    <style name="KeyboardTheme">
+        <item name="android:keyBackground">@drawable/key_background</item>
+        <item name="android:keyTextColor">#FFFFFF</item>
+        <item name="android:labelTextSize">18sp</item>
+    </style>
+</resources>

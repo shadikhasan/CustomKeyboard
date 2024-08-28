@@ -1,0 +1,5 @@
+<!-- res/drawable/key_background.xml -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true" android:drawable="@drawable/key_pressed_color"/>
+    <item android:drawable="@drawable/key_default_color"/>
+</selector>

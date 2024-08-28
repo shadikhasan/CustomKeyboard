@@ -1,0 +1,131 @@
+<!-- res/xml/qwerty.xml -->
+<Keyboard xmlns:android="http://schemas.android.com/apk/res/android"
+    android:horizontalGap="4px"
+    android:keyWidth="10%p"
+    android:keyHeight="60dp"
+    android:verticalGap="4px">
+
+    <!-- Row One -->
+    <Row>
+        <Key
+            android:codes="2437"
+            android:keyEdgeFlags="left"
+            android:keyLabel="অ" />
+        <Key
+            android:codes="2438"
+            android:keyLabel="আ" />
+        <Key
+            android:codes="2439"
+            android:keyLabel="ই" />
+        <Key
+            android:codes="2440"
+            android:keyLabel="ঈ" />
+        <Key
+            android:codes="2441"
+            android:keyLabel="উ" />
+        <Key
+            android:codes="2442"
+            android:keyLabel="ঊ" />
+        <Key
+            android:codes="2444"
+            android:keyLabel="এ" />
+        <Key
+            android:codes="2448"
+            android:keyLabel="ঐ" />
+        <Key
+            android:codes="2451"
+            android:keyLabel="ও" />
+        <Key
+            android:codes="2452"
+            android:keyEdgeFlags="right"
+            android:keyLabel="ঔ" />
+    </Row>
+    <!-- Row 1: QWERT -->
+    <Row>
+        <Key
+            android:popupKeyboard="@xml/popup_key_q"
+            android:popupCharacters="1"
+            android:keyWidth="20%p"
+            android:codes="113"
+            android:keyLabel="Q" />
+        <Key
+            android:popupKeyboard="@xml/popup_key_w"
+            android:popupCharacters="2"
+            android:keyWidth="20%p"
+            android:codes="119"
+            android:keyLabel="W" />
+        <Key
+            android:popupCharacters="3"
+            android:keyWidth="20%p"
+            android:codes="101"
+            android:keyLabel="E" />
+        <Key
+            android:keyWidth="20%p"
+            android:codes="114"
+            android:keyLabel="R" />
+        <Key
+            android:keyWidth="20%p"
+            android:codes="116"
+            android:keyLabel="T" />
+    </Row>
+
+    <!-- Row 2: ASDFG -->
+    <Row>
+        <Key
+            android:keyWidth="20%p"
+            android:codes="97"
+            android:keyLabel="A" />
+        <Key
+            android:keyWidth="20%p"
+            android:codes="115"
+            android:keyLabel="S" />
+        <Key
+            android:keyWidth="20%p"
+            android:codes="100"
+            android:keyLabel="D" />
+        <Key
+            android:keyWidth="20%p"
+            android:codes="102"
+            android:keyLabel="F" />
+        <Key
+            android:keyWidth="20%p"
+            android:codes="103"
+            android:keyLabel="G" />
+    </Row>
+
+    <!-- Row 3: ZXCV, Space, Enter -->
+    <Row>
+        <Key
+            android:keyWidth="20%p"
+            android:codes="122"
+            android:keyLabel="Z" />
+        <Key
+            android:keyWidth="20%p"
+            android:codes="120"
+            android:keyLabel="X" />
+        <Key
+            android:keyWidth="20%p"
+            android:codes="99"
+            android:keyLabel="C" />
+        <Key
+            android:keyWidth="20%p"
+            android:codes="118"
+            android:keyLabel="V" />
+        <Key
+            android:keyWidth="20%p"
+            android:codes="98"
+            android:keyLabel="B" />
+    </Row>
+
+    <!-- Row 4: Space and Enter -->
+    <Row>
+        <Key
+            android:codes="32"
+            android:keyWidth="50%p"
+            android:keyLabel="Space" />
+        <Key
+            android:codes="10"
+            android:keyWidth="50%p"
+            android:keyLabel="Enter" />
+    </Row>
+</Keyboard>

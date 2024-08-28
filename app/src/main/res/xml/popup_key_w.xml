@@ -1,0 +1,11 @@
+<!-- res/xml/popup_key_q.xml -->
+<Keyboard xmlns:android="http://schemas.android.com/apk/res/android"
+    android:keyWidth="50dp"
+    android:keyHeight="50dp"
+    android:horizontalGap="0px"
+    android:verticalGap="0px">
+
+    <Row>
+        <Key android:codes="50" android:keyLabel="2" /> <!-- Code for '1' -->
+    </Row>
+</Keyboard>
